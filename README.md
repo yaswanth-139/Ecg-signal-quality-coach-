@@ -37,8 +37,6 @@ Generate data —  generate_ecg_data.py  synthesizes thousands of ECG windows wi
 Extract features —  ecg_features.py  turns each window into 21 numbers: frequency-band power shares, waveform shape statistics (kurtosis, skew, Hjorth parameters, zero-crossing rate), and beat-regularity measures (R-peak rate, RR variability, template correlation).
 3. 
 Train —  train_ecg_model.py  fits a multi-output Random Forest (300 trees) to predict the probability of each artifact per window, evaluates per-artifact F1 scores, and saves the model to  ecg_quality_model.joblib .
-4. 
-Score — each window's score is  100 − (severity-weighted probability of the most likely problem) . Power-line hum counts half because a notch filter can fix it.
 
 
 
