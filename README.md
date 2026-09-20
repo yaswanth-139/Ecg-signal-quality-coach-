@@ -27,3 +27,46 @@ An educational web app that analyzes ECG recordings and tells you **which parts 
 ```bash
 git clone https://github.com/<your-username>/ecg-signal-quality-coach.git
 cd ecg-signal-quality-coach
+
+
+How It Works
+The AI pipeline
+1. 
+Generate data —  generate_ecg_data.py  synthesizes thousands of ECG windows with random heart rate, waveform shape, and injected artifacts. Each window is labeled with the artifacts it contains (baseline, powerline, muscle, motion, pop, flatline, clipping).
+2. 
+Extract features —  ecg_features.py  turns each window into 21 numbers: frequency-band power shares, waveform shape statistics (kurtosis, skew, Hjorth parameters, zero-crossing rate), and beat-regularity measures (R-peak rate, RR variability, template correlation).
+3. 
+Train —  train_ecg_model.py  fits a multi-output Random Forest (300 trees) to predict the probability of each artifact per window, evaluates per-artifact F1 scores, and saves the model to  ecg_quality_model.joblib .
+4. 
+Score — each window's score is  100 − (severity-weighted probability of the most likely problem) . Power-line hum counts half because a notch filter can fix it.
+
+
+Project Structure
+├── app.py                # Streamlit web app (UI, plots, report)
+├── ecg_quality.py        # Signal processing + rule-based scoring
+├── ecg_features.py       # Feature extraction + AI scoring helpers
+├── generate_ecg_data.py  # Step 1: build labeled training data
+├── train_ecg_model.py    # Step 2: train & evaluate the Random Forest
+├── make_demo_data.py     # Generate the 3 demo CSVs
+├── requirements.txt
+└── ecg_quality_model.joblib   # (generated) trained model
+
+
+🛠️ Tech Stack
+ 
+Python — numpy, scipy (filters, periodograms, peak detection), pandas
+ 
+scikit-learn — Random Forest multi-label classifier
+ 
+Streamlit + Plotly — interactive web UI and signal visualization
+ 
+joblib — model serialization
+
+
+🧪 Known Limitations & Future Work
+ 
+The model is trained and tested on synthetic data. Real-world validation (e.g., PhysioNet recordings) is planned future work.
+ 
+The app analyzes one ECG lead at a time.
+ 
+Scores are tuned for resting recordings at typical sampling rates (250–500 Hz).
