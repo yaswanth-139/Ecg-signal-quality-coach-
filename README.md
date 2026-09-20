@@ -41,6 +41,8 @@ Train —  train_ecg_model.py  fits a multi-output Random Forest (300 trees) to 
 Score — each window's score is  100 − (severity-weighted probability of the most likely problem) . Power-line hum counts half because a notch filter can fix it.
 
 
+
+
 Project Structure
 ├── app.py                # Streamlit web app (UI, plots, report)
 ├── ecg_quality.py        # Signal processing + rule-based scoring
@@ -52,6 +54,8 @@ Project Structure
 └── ecg_quality_model.joblib   # (generated) trained model
 
 
+
+
 🛠️ Tech Stack
  
 Python — numpy, scipy (filters, periodograms, peak detection), pandas
@@ -61,6 +65,9 @@ scikit-learn — Random Forest multi-label classifier
 Streamlit + Plotly — interactive web UI and signal visualization
  
 joblib — model serialization
+
+
+
 
 
 🧪 Known Limitations & Future Work
